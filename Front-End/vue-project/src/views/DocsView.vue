@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>ABA DE ABOUT</h1>
+        <h1>ABA DE DOCS</h1>
     </div>
 </template>
 
