@@ -4,6 +4,7 @@ import db from "../firebase/firestore/firestore.js";
 class ImageDataController {
 
     static async sendImageData (req, res) {
+
         try {
             const {image_name, keywords_list} = req.body;
 
@@ -26,6 +27,7 @@ class ImageDataController {
     }
 
     static async receiveAllImagesData (req, res) {
+
         try {
             const result = [];
             const datas = await getDocs(collection(db, "image-data"));
@@ -45,6 +47,7 @@ class ImageDataController {
     }
 
     static async editAnImageData (req, res) {
+
         try {
             const datas = [];
             const listOfData = await getDocs(collection(db, "image-data"));
@@ -78,6 +81,7 @@ class ImageDataController {
     }
 
     static async deleteAnImageData (req, res) {
+
         try {
             const datas = [];
             const listOfData = await getDocs(collection(db, "image-data"));
