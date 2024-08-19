@@ -7,12 +7,10 @@ onMounted(() => {
     initFlowbite();
 })
 
-// Upload pra Storage:
-
-const files = ref([]);
 const raw_key_words = ref();
 var key_words = []
 
+const files = ref([]);
 
 function preparaArquivo (evento) {
     files.value = Array.from(evento.target.files)
@@ -29,13 +27,26 @@ async function enviaPalavrasChave (keywords_list) {
         image_name : "Exemplo de nome .png",
         keywords_list : keywords_list
     })
-    .then(console.log('Enviado'))
+    .then(console.log('Enviado Palavras'))
 }
 
+async function enviaArquivosImagem (files) {
+
+    const formData = new FormData();
+    files.forEach(file => {
+        formData.append('files', file);
+    });
+
+    await axios.post('http://127.0.0.1:3000/api/images-upload', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }})
+    .then(console.log("Arquivo enviado."))
+}
 function testandoPersistividade (e) {
     e.preventDefault();
-   // console.log({files});
-    // console.log(key_words)
+    
+    enviaArquivosImagem(files.value);
     enviaPalavrasChave(key_words);
 }
 
