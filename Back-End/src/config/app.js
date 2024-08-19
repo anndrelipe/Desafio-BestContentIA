@@ -1,6 +1,7 @@
 import express from "express";
 import imageDataRouter from "../routes/imageDataRouter.js";
 import chatGptRouter from "../routes/chatGptRouter.js";
+import imageUploadRouter from "../routes/imageStorageRouter.js";
 import cors from "cors";
 
 const app = express();
@@ -11,7 +12,7 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json(), imageDataRouter, chatGptRouter);
+app.use(express.json(), imageDataRouter, chatGptRouter, imageUploadRouter);
 
 app.get("/", (req, res) => {
     res.send("Hello World!");

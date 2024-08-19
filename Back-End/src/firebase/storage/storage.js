@@ -1,4 +1,4 @@
-import firebase_connection from "../connection.js";
+import firebase_connection from "../firebaseConnection.js";
 import { getStorage, ref } from "firebase/storage";
 
 const storage = getStorage(firebase_connection);
