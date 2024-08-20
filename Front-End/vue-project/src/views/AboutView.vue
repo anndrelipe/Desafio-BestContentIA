@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import { initFlowbite } from 'flowbite'
+import Footer from '@/components/Footer.vue';
 
 onMounted(() => {
     initFlowbite();
@@ -28,6 +29,8 @@ onMounted(() => {
             </div>
         </div>
     </div>
+
+    <Footer/>
 
 </template>
 
