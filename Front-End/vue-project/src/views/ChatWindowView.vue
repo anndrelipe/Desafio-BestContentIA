@@ -8,7 +8,7 @@ onMounted(() => {
 });
 
 const pergunta = ref('');
-const resposta = ref('');
+const resposta = ref('Olá! Sou seu especialista olímpico. Me faça uma pergunta.');
 
 function preparaPergunta(evento) {
     pergunta.value = evento.target.value;
@@ -33,7 +33,7 @@ function sendQuestion (evento) {
         <div id="child" class="flex-grow p-2 overflow-y-auto text-white ">
 
                         <div class="flex items-start gap-2.5 justify-center m-5">
-            <img class="h-8 w-8 rounded-full" src="https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg" alt="Jese image" />
+            <img class="h-8 w-8 rounded-full" src="../assets/65fI2KVe_400x400.jpg" alt="Bot image" />
             <div class="flex flex-col gap-2.5">
                 <div class="flex items-center space-x-2 rtl:space-x-reverse">
                     <span class="text-sm font-semibold text-gray-500 dark:text-white">Bonnie Green</span>
