@@ -22,7 +22,7 @@ onMounted(() => {
         <!-- Main Context -->
         <section class="bg-[#111827] dark:bg-gray-900">
             <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
-                <img src="https://logodownload.org/wp-content/uploads/2020/03/olimpiada-olympic-games-logo-0.png" class="inline-flex justify-center m-0 w-40 h-40" alt="aneis_olimpicos"/>
+                <img src="../assets/olimpiada-olympic-games-logo-0.png" class="inline-flex justify-center m-0 w-40 h-40" alt="aneis_olimpicos"/>
                 <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl dark:text-white">Explorando o Mundo dos Esportes Olímpicos com <span class="text-blue-500">IA</span></h1>
                 <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">Os Jogos Olímpicos são um símbolo global de excelência, diversidade e espírito esportivo. Neste site, nossa missão é tornar o vasto mundo dos esportes olímpicos acessível a todos. Utilizando tecnologia de ponta em inteligência artificial, oferecemos respostas rápidas e precisas para suas perguntas sobre qualquer modalidade olímpica.</p>
                 <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
