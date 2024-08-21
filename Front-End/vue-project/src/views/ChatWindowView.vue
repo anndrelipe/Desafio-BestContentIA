@@ -9,6 +9,14 @@ onMounted(() => {
 
 const pergunta = ref('');
 const resposta = ref('Olá! Sou seu especialista olímpico. Me faça uma pergunta.');
+const data = new Date();
+
+const horas = data.getHours();
+var minutos = data.getMinutes();
+
+if (minutos < 10) {
+    minutos = "0" + minutos
+}
 
 function preparaPergunta(evento) {
     pergunta.value = evento.target.value;
@@ -36,8 +44,8 @@ function sendQuestion (evento) {
             <img class="h-8 w-8 rounded-full" src="../assets/65fI2KVe_400x400.jpg" alt="Bot image" />
             <div class="flex flex-col gap-2.5">
                 <div class="flex items-center space-x-2 rtl:space-x-reverse">
-                    <span class="text-sm font-semibold text-gray-500 dark:text-white">Bonnie Green</span>
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
+                    <span class="text-sm font-semibold text-gray-500 dark:text-white">IA Olimpica</span>
+                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ horas }}:{{ minutos }}</span>
                 </div>
                 <div class="leading-1.5 flex w-full max-w-[500px] flex-col">
                     <textarea rows="25" cols="100" style="resize: none;" class="text-sm font-normal text-gray-500 dark:text-white bg-[#111827] border-none w-full outline-none">{{ resposta }}</textarea>
