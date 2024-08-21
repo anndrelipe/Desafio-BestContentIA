@@ -13,7 +13,7 @@ onMounted(() => {
 
 <template>
 
-<nav class="bg-gray-800 border-gray-200 dark:bg-gray-900">
+<nav class="bg-gray-800 border-gray-200 dark:bg-gray-900 shadow-lg">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <RouterLink to="/" class="flex items-center space-x-3 rtl:space-x-reverse">
         <span class="self-center text-2xl font-semibold whitespace-nowrap text-[#f8f7f7]"><span class="self-center text-2xl font-semibold whitespace-nowrap text-blue-700 dark:text-white">IA</span> Olimpica</span>
