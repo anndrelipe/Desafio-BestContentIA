@@ -1,11 +1,19 @@
 <script setup>
     import { onMounted } from 'vue'
     import { initFlowbite } from 'flowbite'
+    import { RouterLink } from 'vue-router';
 
     onMounted(() => {
         initFlowbite();
 
     });
+
+    function closeModal () {
+        const modal = document.getElementById('authentication-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    }
 </script>
 
 <template>
@@ -49,7 +57,7 @@
                         </div>
                         <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Faça login na sua conta</button>
                         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                            Ainda não tem uma conta? <a href="#" class="text-blue-700 hover:underline dark:text-blue-500">Criar conta</a>
+                            Ainda não tem uma conta? <RouterLink to="/register" class="text-blue-700 hover:underline dark:text-blue-500" @click="closeModal">Criar conta</RouterLink>
                         </div>
                     </form>
                 </div>
