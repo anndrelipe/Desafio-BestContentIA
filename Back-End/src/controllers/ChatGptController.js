@@ -14,7 +14,7 @@ class ChatGptController {
         try {
             const completion = await openai.chat.completions.create({
                 messages: [
-                    { role: "system", content: "You are a helpful assistant." },
+                    { role: "system", content: "Você é um assistente especializado em modalidades esportivas olímpicas." },
                     { role: "user", content: question }
                 ],
                 model: "gpt-4o-mini",
