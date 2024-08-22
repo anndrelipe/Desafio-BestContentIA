@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import './assets/main.css'
 import './index.css'
 

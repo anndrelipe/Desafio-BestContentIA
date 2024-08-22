@@ -40,7 +40,7 @@ async function sendQuestion (evento) {
 
     resposta.value = '. . .';
 
-    axios.post('http://127.0.0.1:3000/api/question', {
+    axios.post(`${process.env.BASE_API_URL}/api/question`, {
         question: pergunta.value
     })
     .then((response) => {
@@ -87,8 +87,7 @@ function coletaPalavrasChaveDaPergunta () {
 
 async function comparaPalavrasChavesERetornaImagem(lista) {
     var quantidade_palavras_comum = [];
-
-    const docs = await axios.get("http://127.0.0.1:3000/api/images-data");
+    const docs = await axios.get(`${process.env.BASE_API_URL}/api/images-data`);
 
     docs.data.content.forEach((doc) => {
         var somador = 0
@@ -120,7 +119,7 @@ async function getAnImage () {
     const imagem_name = await comparaPalavrasChavesERetornaImagem(palavras_chave);
 
     if (imagem_name !== '') {
-        const finalURL = await axios.get(`http://127.0.0.1:3000/api/images-dowload/${imagem_name}`)
+        const finalURL = await axios.get(`${process.env.BASE_API_URL}/api/images-dowload/${imagem_name}`)
         return finalURL.data.content
     }
 

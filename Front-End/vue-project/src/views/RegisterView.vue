@@ -46,7 +46,7 @@ import axios from 'axios';
 
         try {
 
-            const result = await axios.post('http://127.0.0.1:3000/api/users/register', {
+            const result = await axios.post(`${process.env.BASE_API_URL}/api/users/register`, {
                 email: email.value,
                 password: password.value
             });
