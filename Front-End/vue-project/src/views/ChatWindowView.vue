@@ -9,6 +9,8 @@ onMounted(() => {
 
 const pergunta = ref('');
 const resposta = ref('Olá! Sou seu especialista olímpico. Me faça uma pergunta.');
+const imageLink = ref('');
+
 const data = new Date();
 
 const horas = data.getHours();
@@ -24,8 +26,13 @@ function preparaPergunta(evento) {
     pergunta.value = evento.target.value;
 }
 
-function sendQuestion (evento) {
+async function sendQuestion (evento) {
     evento.preventDefault();
+
+    
+    const image_url = await getAnImage();
+
+    console.log(image_url)
 
     const botao = document.getElementById("enviar");
     botao.classList.remove("cursor-pointer")
@@ -44,7 +51,82 @@ function sendQuestion (evento) {
         botao.classList.add("cursor-pointer");
         resposta.value = response.data.content + '\n\n\n';
         isReadOnly = true;
+        imageLink.value = image_url;
     });
+
+}
+
+function coletaPalavrasChaveDaPergunta () {
+
+    const palavras_filtradas = [];
+    var arrayPalavras = pergunta.value.replace(/,/g, '').replace(/\?/g, '').replace(/\./g, '');
+    arrayPalavras = arrayPalavras.split(' ');
+
+    const stopWords = [
+        "e", "mas", "um", "uma", "uns", "umas", "o", "a", "os", "as", "de", "do", "da", 
+        "dos", "das", "em", "no", "na", "nos", "nas", "por", "para", "com", "sem", 
+        "sobre", "sob", "entre", "até", "eu", "tu", "ele", "ela", "nós", "vós", 
+        "eles", "elas", "meu", "minha", "teu", "tua", "seu", "sua", "nosso", 
+        "nossa", "vosso", "vossa", "deles", "delas", "me", "te", "se", "nos", 
+        "vos", "lhe", "lhes", "um", "uma", "uns", "umas", "qual", "quais", 
+        "quem", "que", "o", "a", "os", "as", "isso", "aquilo", "isto", 
+        "quando", "onde", "como", "porquê", "porque", "se", "já", "não", 
+        "sim", "também", "ou", "mas", "então", "só", "aqui", "ali", "lá", 
+        "qualquer", "algum", "nenhum", "todo", "tudo", "cada", "outro", "outra", 
+        "outros", "outras", "mesmo", "mesma", "mesmos", "mesmas", "ele", "ela", 
+        "eles", "elas", "eu", "tu", "nós", "vós", "é", "mais", '', ' ', '  '
+        ];
+    
+
+        arrayPalavras.forEach((palavra) => {
+        if (!stopWords.includes(palavra.toLowerCase())) {
+            palavras_filtradas.push(palavra)
+        }
+    });
+
+    return palavras_filtradas
+}
+
+async function comparaPalavrasChavesERetornaImagem(lista) {
+    var quantidade_palavras_comum = [];
+
+    const docs = await axios.get("http://127.0.0.1:3000/api/images-data");
+
+    docs.data.content.forEach((doc) => {
+        var somador = 0
+        for (const palavra of lista) {
+            if (doc.keywords_list.map((item) => item.toLowerCase()).includes(palavra.toLowerCase())) {
+                somador += 1;
+            }
+        }
+        quantidade_palavras_comum.push(somador);
+    });
+
+    const better_choice = quantidade_palavras_comum.findIndex((item) => item === Math.max(...quantidade_palavras_comum));
+
+    if (better_choice !== -1) {
+        console.log(quantidade_palavras_comum[better_choice])
+        if (quantidade_palavras_comum[better_choice] === 0 ) {
+            return ''
+        }
+        return docs.data.content[better_choice].image_name;
+    }
+
+    return ''; 
+}
+
+
+async function getAnImage () {
+
+    const palavras_chave = coletaPalavrasChaveDaPergunta();
+    const imagem_name = await comparaPalavrasChavesERetornaImagem(palavras_chave);
+
+    if (imagem_name !== '') {
+        const finalURL = await axios.get(`http://127.0.0.1:3000/api/images-dowload/${imagem_name}`)
+        return finalURL.data.content
+    }
+
+    return ''
 
 }
 
@@ -54,35 +136,41 @@ function sendQuestion (evento) {
     <div id="container" class="flex flex-col h-screen">
         <!-- Área de conteúdo que rola se necessário -->
         <div id="child" class="flex-grow p-2 overflow-y-auto text-white ">
-
-                        <div class="flex items-start gap-2.5 justify-center m-5">
-            <img class="h-8 w-8 rounded-full" src="../assets/65fI2KVe_400x400.jpg" alt="Bot image" />
-            <div class="flex flex-col gap-2.5">
-                <div class="flex items-center space-x-2 rtl:space-x-reverse">
-                    <span class="text-sm font-semibold text-gray-500 dark:text-white">IA Olimpica</span>
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ horas }}:{{ minutos }}</span>
-                </div>
-                <div class="leading-1.5 flex w-full max-w-[500px] flex-col">
-                    <textarea :readonly="isReadOnly" rows="25" cols="100" style="resize: none;" class="text-sm font-normal text-gray-500 dark:text-white bg-[#111827] border-none w-full outline-none">{{ resposta }}</textarea>
-                    <div class="group relative mt-2">
-                        <div class="absolute w-full h-full bg-gray-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
-                            <button data-tooltip-target="download-image" class="inline-flex items-center justify-center rounded-full h-10 w-10 bg-white/30 hover:bg-white/50 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50">
-                                <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 18">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
-                                </svg>
-                            </button>
-                            <div id="download-image" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+            <div class="flex items-start gap-2.5 justify-center m-5">
+                <img class="h-8 w-8 rounded-full" src="../assets/65fI2KVe_400x400.jpg" alt="Bot image" />
+                <div class="flex flex-col gap-2.5 justify-center">
+                    <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                        <span class="text-sm font-semibold text-gray-500 dark:text-white">IA Olimpica</span>
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">{{ horas }}:{{ minutos }}</span>
+                    </div>
+                    <div class="leading-1.5 flex w-full max-w-[500px] flex-col">
+                        <textarea :readonly="isReadOnly" rows="20" cols="100" style="resize: none;" class="text-sm font-normal text-gray-500 dark:text-white bg-[#111827] border-none w-full outline-none">{{ resposta }}</textarea>
+                        <div class="group relative mt-2">
+                            <div class="absolute w-full h-full bg-gray-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
+                                <button data-tooltip-target="download-image" class="inline-flex items-center justify-center rounded-full h-10 w-10 bg-white/30 hover:bg-white/50 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50">
+                                    <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 1v11m0 0 4-4m-4 4L4 8m11 4v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3"/>
+                                    </svg>
+                                </button>
+                                <div id="download-image" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
                                 Download image
                                 <div class="tooltip-arrow" data-popper-arrow></div>
                             </div>
                         </div>
-                        <img src="" class="rounded-lg" />
                     </div>
                 </div>
             </div>
-            </div>
-
         </div>
+
+        <div id="imagem">
+            <img :src="imageLink" class="rounded-lg max-w-[400px] mb-5"/>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+    </div>
 
         <!-- Formulário fixado na parte inferior da tela -->
         <form @submit="sendQuestion" class="p-4 bg-gray-800 fixed bottom-0 w-full">
@@ -103,5 +191,11 @@ function sendQuestion (evento) {
 
 
 <style scoped>
-
+    #container {
+        margin-bottom: 5%;
+    }
+    #imagem {
+        display: flex;
+        justify-content: center
+    }
 </style>
