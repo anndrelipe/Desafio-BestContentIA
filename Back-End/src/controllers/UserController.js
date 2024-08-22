@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import auth from "../firebase/auth/auth.js";
+import "firebase-admin"
 
 class UserController {
     
@@ -53,11 +54,16 @@ class UserController {
         }
 
         try {
+
+            
+
             signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
+
                 res.status(200).json({status:200, message:"Ok", content: {
                     description : "Usuário logado com sucesso!",
-                    token : userCredential._tokenResponse.idToken
+                    token       : userCredential._tokenResponse.idToken,
+                    uid         : userCredential.user.uid
                 }})
             })
             .catch((error) => {
