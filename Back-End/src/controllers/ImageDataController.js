@@ -23,7 +23,8 @@ class ImageDataController {
 
         } catch (error) {
             res.status(500).json({status: 500, message: "Internal Server Error", content: "Algo inesperado aconteceu no servidor."});
-            return        }
+            return        
+        }
     }
 
     static async receiveAllImagesData (req, res) {
