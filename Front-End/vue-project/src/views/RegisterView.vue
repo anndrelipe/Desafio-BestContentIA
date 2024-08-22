@@ -46,7 +46,7 @@ import axios from 'axios';
 
         try {
 
-            const result = await axios.post(`${process.env.BASE_API_URL}/api/users/register`, {
+            const result = await axios.post(`https://desafio-bestcontentia-1.onrender.com/api/users/register`, {
                 email: email.value,
                 password: password.value
             });

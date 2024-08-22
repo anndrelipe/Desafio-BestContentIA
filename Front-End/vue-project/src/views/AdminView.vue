@@ -31,7 +31,7 @@ async function enviaPalavrasChave (keywords_list, files) {
         formData.append('files', file);
     });
 
-    await axios.post(`${process.env.BASE_API_URL}/api/images-data`, {
+    await axios.post(`https://desafio-bestcontentia-1.onrender.com/api/images-data`, {
         image_name : formData.get('files').name,
         keywords_list : keywords_list
     })
@@ -47,7 +47,7 @@ async function enviaArquivosImagem (files) {
 
     document.getElementById("progresso").classList.remove("hidden");
 
-    await axios.post(`${process.env.BASE_API_URL}/api/images-upload`, formData, {
+    await axios.post(`https://desafio-bestcontentia-1.onrender.com/api/images-upload`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         },

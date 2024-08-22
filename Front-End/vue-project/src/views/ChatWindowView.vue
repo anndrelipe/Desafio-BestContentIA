@@ -40,7 +40,7 @@ async function sendQuestion (evento) {
 
     resposta.value = '. . .';
 
-    axios.post(`${process.env.BASE_API_URL}/api/question`, {
+    axios.post(`https://desafio-bestcontentia-1.onrender.com/api/question`, {
         question: pergunta.value
     })
     .then((response) => {
@@ -87,7 +87,7 @@ function coletaPalavrasChaveDaPergunta () {
 
 async function comparaPalavrasChavesERetornaImagem(lista) {
     var quantidade_palavras_comum = [];
-    const docs = await axios.get(`${process.env.BASE_API_URL}/api/images-data`);
+    const docs = await axios.get(`https://desafio-bestcontentia-1.onrender.com/api/images-data`);
 
     docs.data.content.forEach((doc) => {
         var somador = 0
@@ -119,7 +119,7 @@ async function getAnImage () {
     const imagem_name = await comparaPalavrasChavesERetornaImagem(palavras_chave);
 
     if (imagem_name !== '') {
-        const finalURL = await axios.get(`${process.env.BASE_API_URL}/api/images-dowload/${imagem_name}`)
+        const finalURL = await axios.get(`https://desafio-bestcontentia-1.onrender.com/api/images-dowload/${imagem_name}`)
         return finalURL.data.content
     }
 
